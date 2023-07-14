@@ -7,8 +7,9 @@ import MyOrders from "../MyOrders/MyOrders.jsx";
 import NotFound from "../NotFound/NotFound.jsx";
 import SignIn from "../SignIn/SignIn.jsx";
 import NavBar from "../../components/NavBar/NavBar";
+import { ShoppingCartProvider } from "../../Context/Context";
 
-const AppRoutes= () => {
+const AppRoutes = () => {
   let routes = useRoutes([
     { path: "/", element: <Home /> },
     { path: "/MyAccount", element: <MyAccount /> },
@@ -19,15 +20,17 @@ const AppRoutes= () => {
   ]);
 
   return routes;
-}
+};
 
-const  App = () => {
+const App = () => {
   return (
-    <BrowserRouter>
-    <NavBar/>
-      <AppRoutes />
-    </BrowserRouter>
+    <ShoppingCartProvider>
+      <BrowserRouter>
+        <NavBar />
+        <AppRoutes />
+      </BrowserRouter>
+    </ShoppingCartProvider>
   );
-}
+};
 
 export default App;

@@ -1,11 +1,26 @@
-import Layout from "../../components/Layout/Layout"
+import Card from "../../components/Card/Card";
+import Layout from "../../components/Layout/Layout";
+import { useState, useEffect } from "react";
 
 function Home() {
+  const [items, setItems] = useState(null);
+
+  useEffect(() => {
+    fetch("https://api.escuelajs.co/api/v1/products")
+      .then((resp) => resp.json())
+      .then((data) => setItems(data));
+  }, []);
+
   return (
     <Layout>
-      Home
+      <div className="grid gap-3 grid-cols-2 w-full max-w-screen-lg">
+
+      {items?.map((item) => (
+        <Card data={item} key={item.id} />
+      ))}
+      </div>
     </Layout>
-  )
+  );
 }
 
-export default Home
+export default Home;
