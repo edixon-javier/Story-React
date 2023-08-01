@@ -13,6 +13,7 @@ const Card = (data) => {
     cartProducts,
     openCheckoutDetail,
     closeCheckoutDetail,
+    closeProductDetail,
   } = useContext(ShoppingCartContext);  
 
   const showProduct = (value) => {
@@ -25,6 +26,7 @@ const Card = (data) => {
     event.stopPropagation();
     setCount(count + 1)
     openCheckoutDetail();
+    closeProductDetail()
     setCartProducts([...cartProducts, value]);
   }
 

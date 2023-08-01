@@ -2,11 +2,10 @@ import { useContext } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { ShoppingCartContext } from "../../Context/Context";
 import "./CheckoutSideMenu.css";
+import { OrderCard } from "../OrderCard/OrderCard";
 function CheckoutSideMenu() {
-  const {
-    isCheckoutOpen,
-    closeCheckoutDetail,
-  } = useContext(ShoppingCartContext);
+  const { isCheckoutOpen, closeCheckoutDetail, cartProducts } =
+    useContext(ShoppingCartContext);
 
   return (
     <aside
@@ -23,22 +22,18 @@ function CheckoutSideMenu() {
           />
         </div>
       </div>
-      <figure className="px-6">
-        <img
-          className="w-full h-2/3 rounded-lg"
-          //   src={productToShow.images}
-          //   alt={productToShow.title}
-        />
-        <p className="flex flex-col p-6">
-          <span className="font-medium text-2xl mb-2">
-            {/* {productToShow.price} */}
-          </span>
-          {/* <span className="font-medium text-md">{productToShow.title}</span> */}
-          <span className="font-medium text-sm">
-            {/* {productToShow.description} */}
-          </span>
-        </p>
-      </figure>
+      <div className="px-6 overflow-y-scroll">
+        {
+        cartProducts?.map((item) => 
+         ( <OrderCard
+            title={item.title}
+            imageUrl={item.images}
+            price={item.price}
+            key={item.id}
+          />)
+        )
+        }
+      </div>
     </aside>
   );
 }
