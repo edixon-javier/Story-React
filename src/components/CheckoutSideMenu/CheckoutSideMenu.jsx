@@ -3,9 +3,33 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import { ShoppingCartContext } from "../../Context/Context";
 import "./CheckoutSideMenu.css";
 import { OrderCard } from "../OrderCard/OrderCard";
+import { totalPrice } from "../../utils/utils";
+import { Link } from "react-router-dom";
 function CheckoutSideMenu() {
-  const { isCheckoutOpen, closeCheckoutDetail, cartProducts } =
-    useContext(ShoppingCartContext);
+  const {
+    isCheckoutOpen,
+    closeCheckoutDetail,
+    cartProducts,
+    setCartProducts,
+    order,
+    setOrder,
+  } = useContext(ShoppingCartContext);
+
+  const handleDelete = (id) => {
+    const filteredProducts = cartProducts.filter(product => product.id !== id)
+    setCartProducts(filteredProducts);
+  }
+
+  const handledCheckout = () => {
+    const orderToAdd = {
+      date: '0.1.02.2023',
+      product: cartProducts,
+      totalProducts: cartProducts.length,
+      totalPrice: totalPrice(cartProducts)
+    }
+    setOrder([...order, orderToAdd]);
+    setCartProducts([]);
+  }
 
   return (
     <aside
@@ -22,17 +46,26 @@ function CheckoutSideMenu() {
           />
         </div>
       </div>
-      <div className="px-6 overflow-y-scroll">
-        {
-        cartProducts?.map((item) => 
-         ( <OrderCard
+      <div className="px-6 overflow-y-scroll flex-1">
+        {cartProducts?.map((item) => (
+          <OrderCard
+            id={item.id}
             title={item.title}
             imageUrl={item.images}
             price={item.price}
             key={item.id}
-          />)
-        )
-        }
+            handleDelete={handleDelete}
+          />
+        ))}
+      </div>
+      <div className="px-6 mb-6">
+        <p className="flex justify-between items-center mb-2">
+          <span className="font-light">Total</span>
+          <span className="font-medium text-1xl">${totalPrice(cartProducts)}</span>
+        </p>
+        <Link to='/my-orders/last'>
+        <button className="w-full bg-black py-3 text-white rounded-md" onClick={()=> handledCheckout()}>Checkout</button>
+        </Link>
       </div>
     </aside>
   );
