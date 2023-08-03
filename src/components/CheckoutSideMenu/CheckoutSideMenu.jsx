@@ -61,10 +61,17 @@ function CheckoutSideMenu() {
       <div className="px-6 mb-6">
         <p className="flex justify-between items-center mb-2">
           <span className="font-light">Total</span>
-          <span className="font-medium text-1xl">${totalPrice(cartProducts)}</span>
+          <span className="font-medium text-1xl">
+            ${totalPrice(cartProducts)}
+          </span>
         </p>
-        <Link to='/my-orders/last'>
-        <button className="w-full bg-black py-3 text-white rounded-md" onClick={()=> handledCheckout()}>Checkout</button>
+        <Link to="/MyOrder/last">
+          <button
+            className="w-full bg-black py-3 text-white rounded-md"
+            onClick={() => handledCheckout()}
+          >
+            Checkout
+          </button>
         </Link>
       </div>
     </aside>
