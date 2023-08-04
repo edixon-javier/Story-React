@@ -29,6 +29,7 @@ function CheckoutSideMenu() {
     }
     setOrder([...order, orderToAdd]);
     setCartProducts([]);
+    closeCheckoutDetail()
   }
 
   return (
@@ -65,7 +66,7 @@ function CheckoutSideMenu() {
             ${totalPrice(cartProducts)}
           </span>
         </p>
-        <Link to="/MyOrder/last">
+        <Link to="/MyOrders">
           <button
             className="w-full bg-black py-3 text-white rounded-md"
             onClick={() => handledCheckout()}
