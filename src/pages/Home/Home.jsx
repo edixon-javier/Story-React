@@ -28,7 +28,10 @@ function Home() {
         className="rounded-lg border-black w-80 p-4 mb-4 focus:outline "
         onChange={(event) => setsearchByTitle(event.target.value)}
       />
+      <div className="grid gap-3 grid-cols-4 w-full max-w-screen-lg">
+
       {renderView()}
+      </div>
       <ProductDetail />
     </Layout>
   );
