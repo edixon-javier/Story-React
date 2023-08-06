@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
 export const ShoppingCartContext = createContext();
 
@@ -30,8 +31,6 @@ export const ShoppingCartProvider = ({ children }) => {
   //? filter by category
   const [searchByCategory, setsearchByCategory] = useState(null);
 
-
-
   useEffect(() => {
     fetch("https://api.escuelajs.co/api/v1/products")
       .then((resp) => resp.json())
@@ -39,24 +38,59 @@ export const ShoppingCartProvider = ({ children }) => {
   }, []);
 
   const filteredItemsByCategory = (items, searchByCategory) => {
-    return items?.filter(value => value.category.name.toLowerCase().includes(searchByCategory.toLowerCase()))
-  }
+    return items?.filter((value) =>
+      value.category.name.toLowerCase().includes(searchByCategory.toLowerCase())
+    );
+  };
 
   const filteredItemsByTitle = (items, searchByTitle) => {
-    return items?.filter(value => value.title.toLowerCase().includes(searchByTitle.toLowerCase()))
-  }
+    return items?.filter((value) =>
+      value.title.toLowerCase().includes(searchByTitle.toLowerCase())
+    );
+  };
+
+  const filterBy = (searchType, items, searchByTitle, searchByCategory) => {
+    if (searchType === "BY_TITLE_AND_CATEGORY") {
+      return filteredItemsByCategory(items, searchByTitle).filter((value) =>
+        value.title.toLowerCase().includes(searchByTitle.toLowerCase())
+      );
+    }
+
+    if (searchType === "BY_TITLE") {
+      return filteredItemsByTitle(items, searchByTitle);
+    }
+
+    if (searchType === "BY_CATEGORY") {
+      return filteredItemsByCategory(items, searchByCategory);
+    }
+
+    if (searchType === null) {
+      return items;
+    }
+  };
+  console.log("searchByTitle", searchByTitle);  
 
   useEffect(() => {
-    if(searchByTitle){
-      setFilteredItems(filteredItemsByTitle(items, searchByTitle))
-    }
-
-    if(searchByCategory){
-      setFilteredItems(filteredItemsByCategory(items, searchByCategory))
-    }
+    if (searchByTitle && searchByCategory)
+      setFilteredItems(
+        filterBy(
+          "BY_TITLE_AND_CATEGORY",
+          items,
+          searchByTitle,
+          searchByCategory
+        )
+      );
+    if (searchByTitle && !searchByCategory)
+      setFilteredItems(
+        filterBy("BY_TITLE", items, searchByTitle, searchByCategory)
+      );
+    if (!searchByTitle && searchByCategory)
+      setFilteredItems(
+        filterBy("BY_CATEGORY", items, searchByTitle, searchByCategory)
+      );
+    if (!searchByTitle && !searchByCategory)
+      setFilteredItems(filterBy(null, items, searchByTitle, searchByCategory));
   }, [items, searchByTitle, searchByCategory]);
-
-
 
   return (
     <ShoppingCartContext.Provider
@@ -81,10 +115,14 @@ export const ShoppingCartProvider = ({ children }) => {
         searchByTitle,
         setsearchByTitle,
         filteredItems,
-        setsearchByCategory
+        setsearchByCategory,
       }}
     >
       {children}
     </ShoppingCartContext.Provider>
   );
+};
+
+ShoppingCartProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };

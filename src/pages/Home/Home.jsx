@@ -5,18 +5,14 @@ import { ProductDetail } from "../../components/ProductDetail/ProductDetail";
 import { ShoppingCartContext } from "../../Context/Context";
 
 function Home() {
-  const { items, setsearchByTitle, filteredItems, searchByTitle } =
+  const { setsearchByTitle, filteredItems, searchByTitle } =
     useContext(ShoppingCartContext);
 
   const renderView = () => {
-    if (searchByTitle?.length > 0) {
-      if (filteredItems?.length > []) {
-        return filteredItems?.map((item) => <Card data={item} key={item.id} />);
-      } else {
-        return <div>We dont have anything:searchByTitle</div>;
-      }
+    if (filteredItems?.length > 0) {
+      return filteredItems?.map((item) => <Card data={item} key={item.id} />);
     } else {
-      return items?.map((item) => <Card data={item} key={item.id} />);
+      return <div>Sin coincidencias : {searchByTitle}</div>;
     }
   };
   //? the code is nof found, the condition not found, review

@@ -13,6 +13,7 @@ function CheckoutSideMenu() {
     setCartProducts,
     order,
     setOrder,
+    setsearchByTitle
   } = useContext(ShoppingCartContext);
 
   const handleDelete = (id) => {
@@ -30,6 +31,7 @@ function CheckoutSideMenu() {
     setOrder([...order, orderToAdd]);
     setCartProducts([]);
     closeCheckoutDetail()
+    setsearchByTitle(null)
   }
 
   return (

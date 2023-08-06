@@ -13,12 +13,16 @@ function NavBar() {
     <nav className="flex justify-between items-center fixed z-10 w-full py-5 px-8 text-sm  font-semibold top-0">
       <ul className="flex items-center gap-3">
         <li className="font-bold text-lg">
-          <NavLink to="/">Shopi</NavLink>
+          <NavLink 
+          to="/" 
+          onClick={()=> setsearchByCategory(null)}
+          >Shopi</NavLink>
         </li>
         <li>
           <NavLink
             to="/All"
             className={({ isActive }) => (isActive ? activeStyle : undefined)}
+            onClick={()=> setsearchByCategory(null)}
           >
             All
           </NavLink>
@@ -54,16 +58,6 @@ function NavBar() {
         </li>
         <li>
           <NavLink
-            to="/Toys"
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
-            onClick={()=> setsearchByCategory("Toys")}
-
-          >
-            Toys
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
             to="/Others"
             className={({ isActive }) => (isActive ? activeStyle : undefined)}
             onClick={()=> setsearchByCategory("Others")}
@@ -85,7 +79,7 @@ function NavBar() {
         </li>
         <li>
           <NavLink
-            to="/MyOrder"
+            to="/MyOrders/0"
             className={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
             MyOrder
