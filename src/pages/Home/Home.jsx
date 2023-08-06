@@ -5,7 +5,21 @@ import { ProductDetail } from "../../components/ProductDetail/ProductDetail";
 import { ShoppingCartContext } from "../../Context/Context";
 
 function Home() {
-  const { items, setsearchByTitle } = useContext(ShoppingCartContext);
+  const { items, setsearchByTitle, filteredItems, searchByTitle } =
+    useContext(ShoppingCartContext);
+
+  const renderView = () => {
+    if (searchByTitle?.length > 0) {
+      if (filteredItems?.length > []) {
+        return filteredItems?.map((item) => <Card data={item} key={item.id} />);
+      } else {
+        return <div>We dont have anything:searchByTitle</div>;
+      }
+    } else {
+      return items?.map((item) => <Card data={item} key={item.id} />);
+    }
+  };
+  //? the code is nof found, the condition not found, review
 
   return (
     <Layout>
@@ -15,14 +29,10 @@ function Home() {
       <input
         type="text"
         placeholder="Search products"
-        className="rounded-lg border-black w-80 p-4 mb-4 focus:outline"
+        className="rounded-lg border-black w-80 p-4 mb-4 focus:outline "
         onChange={(event) => setsearchByTitle(event.target.value)}
       />
-      <div className="grid gap-3 grid-cols-1 w-full max-w-screen-lg">
-        {items?.map((item) => (
-          <Card data={item} key={item.id} />
-        ))}
-      </div>
+      {renderView()}
       <ProductDetail />
     </Layout>
   );

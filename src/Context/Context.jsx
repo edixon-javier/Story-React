@@ -22,9 +22,14 @@ export const ShoppingCartProvider = ({ children }) => {
   //? order
   const [order, setOrder] = useState([]);
 
-  //? home
+  //? filter input search
   const [items, setItems] = useState(null);
+  const [filteredItems, setFilteredItems] = useState(null);
   const [searchByTitle, setsearchByTitle] = useState(null);
+
+  //? filter by category
+  const [searchByCategory, setsearchByCategory] = useState(null);
+
 
 
   useEffect(() => {
@@ -32,6 +37,26 @@ export const ShoppingCartProvider = ({ children }) => {
       .then((resp) => resp.json())
       .then((data) => setItems(data));
   }, []);
+
+  const filteredItemsByCategory = (items, searchByCategory) => {
+    return items?.filter(value => value.category.name.toLowerCase().includes(searchByCategory.toLowerCase()))
+  }
+
+  const filteredItemsByTitle = (items, searchByTitle) => {
+    return items?.filter(value => value.title.toLowerCase().includes(searchByTitle.toLowerCase()))
+  }
+
+  useEffect(() => {
+    if(searchByTitle){
+      setFilteredItems(filteredItemsByTitle(items, searchByTitle))
+    }
+
+    if(searchByCategory){
+      setFilteredItems(filteredItemsByCategory(items, searchByCategory))
+    }
+  }, [items, searchByTitle, searchByCategory]);
+
+
 
   return (
     <ShoppingCartContext.Provider
@@ -55,6 +80,8 @@ export const ShoppingCartProvider = ({ children }) => {
         setItems,
         searchByTitle,
         setsearchByTitle,
+        filteredItems,
+        setsearchByCategory
       }}
     >
       {children}
